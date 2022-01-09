@@ -6,6 +6,11 @@ from . import views
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
+router.register('user', views.UserViewSet, basename='user')
+router.register('student', views.StudentViewSet, basename='student')
+router.register('tutor', views.TutorViewSet, basename='tutor')
+router.register('donor', views.DonorViewSet, basename='donor')
+router.register('mentor', views.MentorViewSet, basename='mentor')
 """
 router.register('customuser', views.CustomUserViewSet, basename='customuser')
 router.register('student', views.StudentAdditionalViewSet, basename='student')
@@ -15,6 +20,8 @@ router.register('donor', views.DonorAdditionalViewSet, basename='donor')
 """
 urlpatterns = [
     path('', include(router.urls)),
+    #path('user-list/',views.UserList,name="User"),
+    #path('student-list/',views.StudentList,name="Student"),
     #path('stucreate/', views.create_student, name='stucreate'),
 ]
 
