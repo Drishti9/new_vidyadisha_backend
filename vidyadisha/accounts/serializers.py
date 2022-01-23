@@ -8,14 +8,14 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ("id", "email", "first_name", "last_name", "password")
         extra_kwargs = {"password": {"write_only": True}}
         
-        def create(self, validated_data):
-            user = User.objects.create_user(
-                email=validated_data["email"],
-                password=validated_data["password"],
-                last_name=validated_data["last_name"],
-                first_name=validated_data["first_name"]
-                )
-            return user
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            email=validated_data["email"],
+            password=validated_data["password"],
+            last_name=validated_data["last_name"],
+            first_name=validated_data["first_name"]
+            )
+        return user
 
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -26,19 +26,19 @@ class StudentSerializer(serializers.ModelSerializer):
                    
         extra_kwargs = {"password" : {"write_only":True}}
         
-        def create(self,validated_data):
-            user = Student.objects.create_user( 
-                email=validated_data["email"],
-                standard=validated_data["standard"],
-                password=validated_data["password"],
-                institute=validated_data["institute"],
-                requiresDonation = validated_data["requiresDonation"],
-                requiresMentor = validated_data["requiresMentor"],
-                requiresTutor = validated_data["requiresTutor"],
-                last_name=validated_data["last_name"],
-                first_name=validated_data["first_name"],
-                )
-            return user
+    def create(self,validated_data):
+        user = Student.objects.create_user( 
+            email=validated_data["email"],
+            standard=validated_data["standard"],
+            password=validated_data["password"],
+            institute=validated_data["institute"],
+            requiresDonation = validated_data["requiresDonation"],
+            requiresMentor = validated_data["requiresMentor"],
+            requiresTutor = validated_data["requiresTutor"],
+            last_name=validated_data["last_name"],
+            first_name=validated_data["first_name"],
+            )
+        return user
 
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
@@ -61,30 +61,33 @@ class TutorSerializer(WritableNestedModelSerializer):
                    
         extra_kwargs = {"password" : {"write_only":True}}
         
-        def create(self,validated_data):
-            sub_names=validated_data.pop("subject", None)
+    def create(self,validated_data):
+        sub_names=validated_data.pop("subject")
+        print("serialization")
 
-            user = Tutor.objects.create_user( 
-                email=validated_data["email"],
-                standard=validated_data["standard"],
-                password=validated_data["password"],
-                experience_in_years=validated_data["experience_in_years"],
-                is_student=False,
-                is_mentor=False,
-                is_tutor=True,
-                is_donor=False,
-                last_name=validated_data["last_name"],
-                first_name=validated_data["first_name"],
-                )
+        user = Tutor.objects.create_user( 
+            email=validated_data["email"],
+            password=validated_data["password"],
+            experience_in_years=validated_data["experience_in_years"],
+            is_student=False,
+            is_mentor=False,
+            is_tutor=True,
+            is_donor=False,
+            last_name=validated_data["last_name"],
+            first_name=validated_data["first_name"],
+            )
 
-            for each in sub_names:
-                s=accounts.models.Subject.objects.filter(name=each.lower()).first()
-                if not s:
-                    s=accounts.models.Subject.objects.create(name=each)
-                user.subject.add(s)            
-            
-            return user
-            #return sub_names, type(sub_names)
+        print(sub_names)
+        for each in sub_names:
+            for key, value in each.items():
+                print(key, value)
+                s=accounts.models.Subject.objects.filter(name=value).first()
+                print(value)
+                if s is None:
+                    s=accounts.models.Subject.objects.create(name=value)
+                user.subject.add(s)     
+        
+        return user
 
 class MentorSerializer(serializers.ModelSerializer):
     class Meta:
@@ -94,20 +97,20 @@ class MentorSerializer(serializers.ModelSerializer):
                    
         extra_kwargs = {"password" : {"write_only":True}}
         
-        def create(self,validated_data):
-            user = Mentor.objects.create_user( 
-                email=validated_data["email"],
-                standard=validated_data["standard"],
-                password=validated_data["password"],
-                occupation=validated_data["occupation"],
-                is_student=False,
-                is_mentor=True,
-                is_tutor=False,
-                is_donor=False,
-                last_name=validated_data["last_name"],
-                first_name=validated_data["first_name"],
-                )
-            return user
+    def create(self,validated_data):
+        user = Mentor.objects.create_user( 
+            email=validated_data["email"],
+            standard=validated_data["standard"],
+            password=validated_data["password"],
+            occupation=validated_data["occupation"],
+            is_student=False,
+            is_mentor=True,
+            is_tutor=False,
+            is_donor=False,
+            last_name=validated_data["last_name"],
+            first_name=validated_data["first_name"],
+            )
+        return user
 
 class DonorSerializer(serializers.ModelSerializer):
     class Meta:
@@ -117,19 +120,19 @@ class DonorSerializer(serializers.ModelSerializer):
                    
         extra_kwargs = {"password" : {"write_only":True}}
         
-        def create(self,validated_data):
+    def create(self,validated_data):
 
-            user = Donor.objects.create_user( 
-                email=validated_data["email"],
-                standard=validated_data["standard"],
-                password=validated_data["password"],
-                donation_type=validated_data["donation_type"],
-                is_student=False,
-                is_mentor=False,
-                is_tutor=False,
-                is_donor=True,
-                last_name=validated_data["last_name"],
-                first_name=validated_data["first_name"],
-            )
+        user = Donor.objects.create_user( 
+            email=validated_data["email"],
+            standard=validated_data["standard"],
+            password=validated_data["password"],
+            donation_type=validated_data["donation_type"],
+            is_student=False,
+            is_mentor=False,
+            is_tutor=False,
+            is_donor=True,
+            last_name=validated_data["last_name"],
+            first_name=validated_data["first_name"],
+        )
 
-            return user
+        return user

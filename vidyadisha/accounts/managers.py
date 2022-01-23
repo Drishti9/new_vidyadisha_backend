@@ -92,7 +92,6 @@ class MentorManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-
 class TutorManager(BaseUserManager):
     def create_user(
         self,
@@ -100,7 +99,6 @@ class TutorManager(BaseUserManager):
         first_name,
         last_name,
         experience_in_years,
-        subject=None,
         password=None,
         **extra_fields
     ):
@@ -115,8 +113,7 @@ class TutorManager(BaseUserManager):
             is_student=False,
             is_mentor=False,
             is_tutor=True,
-            is_donor=False,
-            subject=subject,
+            is_donor=False
         )
         user=accounts.models.Tutor(
             first_name=first_name,
@@ -127,8 +124,7 @@ class TutorManager(BaseUserManager):
             is_mentor=False,
             is_tutor=True,
             is_donor=False,
-            subject=subject,
-        )
+        )    
 
         """x=set()
         for each in subjects:

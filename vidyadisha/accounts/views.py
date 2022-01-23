@@ -1,4 +1,3 @@
-
 from django.shortcuts import render
 from django.http import HttpResponse
 from .serializers import * 
@@ -151,17 +150,21 @@ class RegisterTutor(generics.GenericAPIView):
         return Response({"role": role}, status=HTTP_200_OK)
         #return Response({"subnames": sub_names, "sub_type":sub_type}, status=HTTP_200_OK)
 
-
 # Create your views here.
 class UserViewSet(viewsets.ModelViewSet):
     queryset=User.objects.all()
     serializer_class=UserSerializer
+
+class SubjectViewSet(viewsets.ModelViewSet):
+    queryset=Subject.objects.all()
+    serializer_class=SubjectSerializer
 
 class StudentViewSet(viewsets.ModelViewSet):
     queryset=Student.objects.all()
     serializer_class=StudentSerializer
 
 class TutorViewSet(viewsets.ModelViewSet):
+    print("hello")
     queryset=Tutor.objects.all()
     serializer_class=TutorSerializer
 
