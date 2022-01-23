@@ -1,4 +1,5 @@
 from .models import *
+from drf_writable_nested.serializers import WritableNestedModelSerializer
 from rest_framework import serializers
 
 class UserSerializer(serializers.ModelSerializer):
@@ -31,10 +32,6 @@ class StudentSerializer(serializers.ModelSerializer):
                 standard=validated_data["standard"],
                 password=validated_data["password"],
                 institute=validated_data["institute"],
-                is_student=True,
-                is_mentor=False,
-                is_tutor=False,
-                is_donor=False,
                 requiresDonation = validated_data["requiresDonation"],
                 requiresMentor = validated_data["requiresMentor"],
                 requiresTutor = validated_data["requiresTutor"],
@@ -43,16 +40,31 @@ class StudentSerializer(serializers.ModelSerializer):
                 )
             return user
 
-class TutorSerializer(serializers.ModelSerializer):
+class SubjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subject
+        fields = ( "id","name")
+        
+        def create(self,sub_name):
+            sub = Subject.objects.create( 
+                name=sub_name
+                )
+            return sub
+
+class TutorSerializer(WritableNestedModelSerializer):
+    subject=SubjectSerializer(many=True)
+
     class Meta:
         model = Tutor
         fields = ( "id","email","first_name",
-                   "last_name", "experience_in_years","password")
+                   "last_name", "subject","experience_in_years","password")
                    
         extra_kwargs = {"password" : {"write_only":True}}
         
         def create(self,validated_data):
-            user = Student.objects.create_user( 
+            sub_names=validated_data.pop("subject", None)
+
+            user = Tutor.objects.create_user( 
                 email=validated_data["email"],
                 standard=validated_data["standard"],
                 password=validated_data["password"],
@@ -64,7 +76,15 @@ class TutorSerializer(serializers.ModelSerializer):
                 last_name=validated_data["last_name"],
                 first_name=validated_data["first_name"],
                 )
+
+            for each in sub_names:
+                s=accounts.models.Subject.objects.filter(name=each.lower()).first()
+                if not s:
+                    s=accounts.models.Subject.objects.create(name=each)
+                user.subject.add(s)            
+            
             return user
+            #return sub_names, type(sub_names)
 
 class MentorSerializer(serializers.ModelSerializer):
     class Meta:
@@ -75,7 +95,7 @@ class MentorSerializer(serializers.ModelSerializer):
         extra_kwargs = {"password" : {"write_only":True}}
         
         def create(self,validated_data):
-            user = Student.objects.create_user( 
+            user = Mentor.objects.create_user( 
                 email=validated_data["email"],
                 standard=validated_data["standard"],
                 password=validated_data["password"],
@@ -98,7 +118,8 @@ class DonorSerializer(serializers.ModelSerializer):
         extra_kwargs = {"password" : {"write_only":True}}
         
         def create(self,validated_data):
-            user = Student.objects.create_user( 
+
+            user = Donor.objects.create_user( 
                 email=validated_data["email"],
                 standard=validated_data["standard"],
                 password=validated_data["password"],
@@ -109,5 +130,6 @@ class DonorSerializer(serializers.ModelSerializer):
                 is_donor=True,
                 last_name=validated_data["last_name"],
                 first_name=validated_data["first_name"],
-                )
+            )
+
             return user

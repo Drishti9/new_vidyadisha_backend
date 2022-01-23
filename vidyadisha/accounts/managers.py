@@ -100,7 +100,7 @@ class TutorManager(BaseUserManager):
         first_name,
         last_name,
         experience_in_years,
-        subjects,
+        subject=None,
         password=None,
         **extra_fields
     ):
@@ -116,6 +116,7 @@ class TutorManager(BaseUserManager):
             is_mentor=False,
             is_tutor=True,
             is_donor=False,
+            subject=subject,
         )
         user=accounts.models.Tutor(
             first_name=first_name,
@@ -126,6 +127,7 @@ class TutorManager(BaseUserManager):
             is_mentor=False,
             is_tutor=True,
             is_donor=False,
+            subject=subject,
         )
 
         """x=set()
@@ -171,9 +173,9 @@ class DonorManager(BaseUserManager):
             last_name=last_name,
             email=self.normalize_email(email),
             is_student=False,
-            is_mentor=True,
+            is_mentor=False,
             is_tutor=False,
-            is_donor=False,
+            is_donor=True,
             donation_type=donation_type,
         )
 

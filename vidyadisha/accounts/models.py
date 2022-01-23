@@ -91,7 +91,7 @@ class Tutor(User):
     user.is_donor=False
 
     experience_in_years=models.IntegerField()
-    subject=models.ManyToManyField(Subject, related_name="tutors")
+    subject=models.ManyToManyField(Subject,  related_name="tutors")
 
     objects=TutorManager()
 
