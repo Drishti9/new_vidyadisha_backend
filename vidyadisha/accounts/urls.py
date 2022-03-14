@@ -96,6 +96,8 @@ urlpatterns = [
     path('mentor-register/', views.RegisterMentor.as_view(), name="mentor-register"),
     path('donor-register/', views.RegisterDonor.as_view(), name="donor-register"),
     path('tutor-register/', views.RegisterTutor.as_view(), name="tutor-register"),
+    #path('api-auth/login', views.login_view, name="api-auth-login"),
+    #path('api-auth/logout', views.logout_view, name="api-auth-logout")
     ]
     #path('', include(router.urls)),
     #path('user-list/',views.UserList,name="User"),

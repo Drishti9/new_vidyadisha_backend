@@ -18,9 +18,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(_("is superuser"), default=False)
     is_admin = models.BooleanField(_("is admin"), default=False)
     is_student = models.BooleanField(_("is student"), default=False)
-    is_mentor = models.BooleanField(_("is teacher"), default=False)
-    is_tutor = models.BooleanField(_("is librarian"), default=False)
-    is_donor = models.BooleanField(_("is librarian"), default=False)
+    is_mentor = models.BooleanField(_("is mentor"), default=False)
+    is_tutor = models.BooleanField(_("is tutor"), default=False)
+    is_donor = models.BooleanField(_("is donor"), default=False)
     objects = UserManager()
 
     USERNAME_FIELD="email"

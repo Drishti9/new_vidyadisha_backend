@@ -22,7 +22,7 @@ class StudentSerializer(serializers.ModelSerializer):
         model = Student
         fields = ( "id","email","first_name",
                    "last_name", "standard","institute",
-                   "requiresDonation","requiresMentor","requiresTutor","password")
+                   "requiresDonation","requiresMentor","requiresTutor","password", "mobile", "address")
                    
         extra_kwargs = {"password" : {"write_only":True}}
         
@@ -37,6 +37,8 @@ class StudentSerializer(serializers.ModelSerializer):
             requiresTutor = validated_data["requiresTutor"],
             last_name=validated_data["last_name"],
             first_name=validated_data["first_name"],
+            mobile=validated_data["mobile"],
+            address=validated_data["address"]
             )
         return user
 
@@ -57,7 +59,7 @@ class TutorSerializer(WritableNestedModelSerializer):
     class Meta:
         model = Tutor
         fields = ( "id","email","first_name",
-                   "last_name", "subject","experience_in_years","password")
+                   "last_name", "subject","experience_in_years","password","mobile", "address")
                    
         extra_kwargs = {"password" : {"write_only":True}}
         
@@ -75,6 +77,8 @@ class TutorSerializer(WritableNestedModelSerializer):
             is_donor=False,
             last_name=validated_data["last_name"],
             first_name=validated_data["first_name"],
+            mobile=validated_data["mobile"],
+            address=validated_data["address"]
             )
 
         print(sub_names)
@@ -93,7 +97,7 @@ class MentorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Mentor
         fields = ( "id","email","first_name",
-                   "last_name", "occupation","password")
+                   "last_name", "occupation","password", "mobile", "address")
                    
         extra_kwargs = {"password" : {"write_only":True}}
         
@@ -109,6 +113,8 @@ class MentorSerializer(serializers.ModelSerializer):
             is_donor=False,
             last_name=validated_data["last_name"],
             first_name=validated_data["first_name"],
+            mobile=validated_data["mobile"],
+            address=validated_data["address"]
             )
         return user
 
@@ -116,7 +122,7 @@ class DonorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Donor
         fields = ( "id","email","first_name",
-                   "last_name", "donation_type","password")
+                   "last_name", "donation_type","password","mobile", "address")
                    
         extra_kwargs = {"password" : {"write_only":True}}
         
@@ -133,6 +139,8 @@ class DonorSerializer(serializers.ModelSerializer):
             is_donor=True,
             last_name=validated_data["last_name"],
             first_name=validated_data["first_name"],
+            mobile=validated_data["mobile"],
+            address=validated_data["address"]
         )
 
         return user

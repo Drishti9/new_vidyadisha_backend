@@ -58,6 +58,7 @@ class StudentManager(BaseUserManager):
             is_mentor=False,
             is_tutor=False,
             is_donor=False,
+            **extra_fields
         )
 
         user.set_password(password)
@@ -86,6 +87,7 @@ class MentorManager(BaseUserManager):
             is_mentor=True,
             is_tutor=False,
             is_donor=False,
+            **extra_fields
         )
 
         user.set_password(password)
@@ -113,7 +115,8 @@ class TutorManager(BaseUserManager):
             is_student=False,
             is_mentor=False,
             is_tutor=True,
-            is_donor=False
+            is_donor=False,
+            **extra_fields
         )
         user=accounts.models.Tutor(
             first_name=first_name,
