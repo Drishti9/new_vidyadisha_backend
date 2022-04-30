@@ -29,6 +29,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name=_("user")
         verbose_name_plural=_("users")
+        #abstract = True
 
     def save(self, *args, **kwargs):
         self.username = self.email
@@ -36,7 +37,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
-
 
 class Student(User):
     user=models.OneToOneField(User, on_delete=models.CASCADE, parent_link=True)

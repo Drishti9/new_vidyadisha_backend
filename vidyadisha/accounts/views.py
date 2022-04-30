@@ -90,6 +90,9 @@ class DonorViewSet(viewsets.ModelViewSet):
     queryset=Donor.objects.all()
     serializer_class=DonorSerializer
 
+
+
+###need based views
 class StuRequiringMentorViewSet(viewsets.ModelViewSet):
     queryset=Student.objects.filter(requiresMentor=True)
     serializer_class=StudentSerializer
@@ -105,7 +108,7 @@ class StuRequiringTutorViewSet(viewsets.ModelViewSet):
 """"
 @api_view(['GET'])
 def UserList(request):
-    customuser = User.objects.all()
+    customuser = CustomUser.objects.all()
     serializer = UserSerializer(customuser,many=True)
     return Response(serializer.data)
 
