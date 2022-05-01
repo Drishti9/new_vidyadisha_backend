@@ -30,7 +30,7 @@ user_list=views.UserViewSet.as_view({
 
 user_detail=views.UserViewSet.as_view({
         'get':'retrieve',
-        'put':'update',
+        'patch':'update',
         'delete':'destroy'
     })
 
@@ -41,7 +41,7 @@ student_list=views.StudentViewSet.as_view({
 
 student_detail=views.StudentViewSet.as_view({
         'get':'retrieve',
-        'put':'update',
+        'patch':'update',
         'delete':'destroy'
     })
 
@@ -52,7 +52,7 @@ mentor_list=views.MentorViewSet.as_view({
 
 mentor_detail=views.MentorViewSet.as_view({
         'get':'retrieve',
-        'put':'update',
+        'patch':'update',
         'delete':'destroy'
     })
 
@@ -63,7 +63,7 @@ tutor_list=views.TutorViewSet.as_view({
 
 tutor_detail=views.TutorViewSet.as_view({
         'get':'retrieve',
-        'put':'update',
+        'patch':'update',
         'delete':'destroy'
     })
 
@@ -74,7 +74,7 @@ donor_list=views.DonorViewSet.as_view({
 
 donor_detail=views.DonorViewSet.as_view({
         'get':'retrieve',
-        'put':'update',
+        'patch':'update',
         'delete':'destroy'
     })
 

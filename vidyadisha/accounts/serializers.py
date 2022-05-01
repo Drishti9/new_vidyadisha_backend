@@ -5,7 +5,7 @@ from rest_framework import serializers
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ("id", "email", "first_name", "last_name", "password")
+        fields = ("id", "email", "first_name", "last_name")
         extra_kwargs = {"password": {"write_only": True}}
         
     def create(self, validated_data):
@@ -24,7 +24,7 @@ class StudentSerializer(serializers.ModelSerializer):
                    "last_name", "standard","institute",
                    "requiresDonation","requiresMentor","requiresTutor","password", "mobile", "address")
                    
-        extra_kwargs = {"password" : {"write_only":True}}
+        extra_kwargs = {"password" : {"write_only":True, 'required':False}, "standard":{"required":False}, "institute":{"required":False}, "email":{"required":False}}
         
     def create(self,validated_data):
         user = Student.objects.create_user( 
@@ -54,14 +54,15 @@ class SubjectSerializer(serializers.ModelSerializer):
             return sub
 
 class TutorSerializer(WritableNestedModelSerializer):
-    subject=SubjectSerializer(many=True)
+    subject=SubjectSerializer(many=True, required=False)
+    experience_in_years=serializers.IntegerField(required=False)
 
     class Meta:
         model = Tutor
         fields = ( "id","email","first_name",
                    "last_name", "subject","experience_in_years","password","mobile", "address")
                    
-        extra_kwargs = {"password" : {"write_only":True}}
+        extra_kwargs = {"password" : {"write_only":True, 'required':False}, "email":{'required':False}, "experience_in_years":{'required':False}, "subject":{'required':False}}
         
     def create(self,validated_data):
         sub_names=validated_data.pop("subject")
@@ -71,10 +72,10 @@ class TutorSerializer(WritableNestedModelSerializer):
             email=validated_data["email"],
             password=validated_data["password"],
             experience_in_years=validated_data["experience_in_years"],
-            is_student=False,
-            is_mentor=False,
-            is_tutor=True,
-            is_donor=False,
+            #is_student=False,
+            #is_mentor=False,
+            # is_tutor=True,
+            # is_donor=False,
             last_name=validated_data["last_name"],
             first_name=validated_data["first_name"],
             mobile=validated_data["mobile"],
@@ -99,18 +100,17 @@ class MentorSerializer(serializers.ModelSerializer):
         fields = ( "id","email","first_name",
                    "last_name", "occupation","password", "mobile", "address")
                    
-        extra_kwargs = {"password" : {"write_only":True}}
+        extra_kwargs = {"password" : {"write_only":True, 'required':False}, "occupation":{'required':False}}
         
     def create(self,validated_data):
         user = Mentor.objects.create_user( 
             email=validated_data["email"],
-            standard=validated_data["standard"],
             password=validated_data["password"],
             occupation=validated_data["occupation"],
-            is_student=False,
-            is_mentor=True,
-            is_tutor=False,
-            is_donor=False,
+            # is_student=False,
+            # is_mentor=True,
+            # is_tutor=False,
+            # is_donor=False,
             last_name=validated_data["last_name"],
             first_name=validated_data["first_name"],
             mobile=validated_data["mobile"],
@@ -124,19 +124,18 @@ class DonorSerializer(serializers.ModelSerializer):
         fields = ( "id","email","first_name",
                    "last_name", "donation_type","password","mobile", "address")
                    
-        extra_kwargs = {"password" : {"write_only":True}}
+        extra_kwargs = {"password" : {"write_only":True, 'required':False}, "donation_type":{'required':False}}
         
     def create(self,validated_data):
 
         user = Donor.objects.create_user( 
             email=validated_data["email"],
-            standard=validated_data["standard"],
             password=validated_data["password"],
             donation_type=validated_data["donation_type"],
-            is_student=False,
-            is_mentor=False,
-            is_tutor=False,
-            is_donor=True,
+            # is_student=False,
+            # is_mentor=False,
+            # is_tutor=False,
+            # is_donor=True,
             last_name=validated_data["last_name"],
             first_name=validated_data["first_name"],
             mobile=validated_data["mobile"],

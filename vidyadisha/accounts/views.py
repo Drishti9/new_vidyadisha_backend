@@ -67,7 +67,7 @@ def logout_view(request):
 class UserViewSet(viewsets.ModelViewSet):
     queryset=User.objects.all()
     serializer_class=UserSerializer
-    permission_classes=[IsAuthenticated]
+    #permission_classes=[IsAuthenticated]
 
 class SubjectViewSet(viewsets.ModelViewSet):
     queryset=Subject.objects.all()
@@ -76,7 +76,7 @@ class SubjectViewSet(viewsets.ModelViewSet):
 class StudentViewSet(viewsets.ModelViewSet):
     queryset=Student.objects.all()
     serializer_class=StudentSerializer
-    permission_classes=[IsAuthenticated]
+    #permission_classes=[IsAuthenticated]
 
 class TutorViewSet(viewsets.ModelViewSet):
     queryset=Tutor.objects.all()
@@ -89,9 +89,7 @@ class MentorViewSet(viewsets.ModelViewSet):
 class DonorViewSet(viewsets.ModelViewSet):
     queryset=Donor.objects.all()
     serializer_class=DonorSerializer
-
-
-
+ 
 ###need based views
 class StuRequiringMentorViewSet(viewsets.ModelViewSet):
     queryset=Student.objects.filter(requiresMentor=True)
@@ -129,6 +127,7 @@ class RegisterUser(generics.GenericAPIView):
         return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):
+        print(request.data)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
