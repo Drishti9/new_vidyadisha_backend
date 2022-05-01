@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'accounts',
     'friend',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -51,7 +52,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
+
+# Whitelisting React Port
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:3000',
+)
 
 ROOT_URLCONF = 'vidyadisha.urls'
 
