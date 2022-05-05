@@ -78,6 +78,19 @@ donor_detail=views.DonorViewSet.as_view({
         'delete':'destroy'
     })
 
+stu_req_mentor_list=views.StuRequiringMentorViewSet.as_view({
+        'get':'list',
+        'post':'create'
+    })
+
+stu_req_donor_list=views.StuRequiringDonorViewSet.as_view({
+        'get':'list',
+        'post':'create'
+    })
+stu_req_tutor_list=views.StuRequiringTutorViewSet.as_view({
+        'get':'list',
+        'post':'create'
+    })
 
 urlpatterns = [
     path('', include(router.urls)),
@@ -96,8 +109,11 @@ urlpatterns = [
     path('mentor-register/', views.RegisterMentor.as_view(), name="mentor-register"),
     path('donor-register/', views.RegisterDonor.as_view(), name="donor-register"),
     path('tutor-register/', views.RegisterTutor.as_view(), name="tutor-register"),
-    #path('api-auth/login', views.login_view, name="api-auth-login"),
-    #path('api-auth/logout', views.logout_view, name="api-auth-logout")
+    path('stu-req-mentor/', stu_req_mentor_list, name="stu-requiring-mentor"),
+    path('stu-req-tutor/', stu_req_tutor_list, name="stu-requiring-tutor"),
+    path('stu-req-donor/', stu_req_donor_list, name="stu-requiring-donor"),
+    path('login/', views.login_view, name="login"),
+    #path('logout/', views.logout_view, name="logout")
     ]
     #path('', include(router.urls)),
     #path('user-list/',views.UserList,name="User"),

@@ -16,16 +16,44 @@ from rest_framework.generics import CreateAPIView
 
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_200_OK
 
-"""from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 import json
+
+from rest_framework_simplejwt.tokens import RefreshToken
+
+def send_message(request):
+    data = json.loads(request.body)
+    phone=data.get('phone')
+    description=data.get('description')
+
+
+def get_tokens_for_user(user):
+    refresh = RefreshToken.for_user(user)
+
+    if user.is_student:
+        user_type="Student"
+    elif user.is_tutor:
+        user_type="Tutor"
+    elif user.is_mentor:
+        user_type="Mentor"
+    elif user.is_donor:
+        user_type="Donor"
+    else:
+        user_type="None"
+
+    return {
+        'refresh': str(refresh),
+        'access': str(refresh.access_token),
+        'user': user.id,
+        'type':user_type
+    }
 
 @api_view(['POST',])
 @permission_classes((AllowAny,))
 def login_view(request):
 
     #POST API for login
-    
     data = json.loads(request.body)
     email = data.get('email')
     password = data.get('password')
@@ -45,22 +73,23 @@ def login_view(request):
     # authentication user
     user = authenticate(email=email, password=password)
     if user is not None:
-        login(request, user)
+        #login(request, user)
         #return JsonResponse({"success": "User has been logged in"})
-        return JsonResponse({user})
+        user_id = User.objects.get(email=email)
+        data = get_tokens_for_user(user_id)
+        return Response(data, status=HTTP_200_OK)
+        #return JsonResponse({user})
     return JsonResponse(
         {"errors": "Invalid credentials"},
         status=400,
     )
 
-@api_view(['POST',])
+"""@api_view(['POST',])
 @permission_classes((IsAuthenticated,))
 def logout_view(request):
     logout(request)
     data = {'success': 'Sucessfully logged out'}
-    return Response(data=data, status=HTTP_200_OK)
-
-"""
+    return Response(data=data, status=HTTP_200_OK)"""
 
 # Create your views here.
 
