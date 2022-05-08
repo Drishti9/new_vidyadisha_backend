@@ -14,6 +14,9 @@ class UserManager(BaseUserManager):
 
         user.set_password(password)
         user.save(using=self._db)
+        #friend.models.FriendList.objects.create(myself=user)
+        #friend.models.GroupList.objects.create(person=user)
+        
         return user
         
     def create_superuser(self, email, password, **extra_fields):
@@ -64,6 +67,8 @@ class StudentManager(BaseUserManager):
 
         user.set_password(password)
         user.save(using=self._db)
+
+        #friend.models.Group.objects.create(student=user)
         return user
 
 class MentorManager(BaseUserManager):
@@ -128,6 +133,7 @@ class TutorManager(BaseUserManager):
             is_mentor=False,
             is_tutor=True,
             is_donor=False,
+            **extra_fields
         )    
 
         """x=set()

@@ -19,3 +19,6 @@ class FriendRequestAdmin(admin.ModelAdmin):
 
 admin.site.register(FriendList)
 admin.site.register(FriendRequest)
+admin.site.register(Group)
+admin.site.register(GroupList)
+admin.site.register(Post)

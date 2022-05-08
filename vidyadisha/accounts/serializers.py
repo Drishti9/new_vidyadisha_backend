@@ -66,7 +66,6 @@ class TutorSerializer(WritableNestedModelSerializer):
         
     def create(self,validated_data):
         sub_names=validated_data.pop("subject")
-        print("serialization")
 
         user = Tutor.objects.create_user( 
             email=validated_data["email"],
@@ -82,12 +81,9 @@ class TutorSerializer(WritableNestedModelSerializer):
             address=validated_data["address"]
             )
 
-        print(sub_names)
         for each in sub_names:
             for key, value in each.items():
-                print(key, value)
                 s=accounts.models.Subject.objects.filter(name=value).first()
-                print(value)
                 if s is None:
                     s=accounts.models.Subject.objects.create(name=value)
                 user.subject.add(s)     
