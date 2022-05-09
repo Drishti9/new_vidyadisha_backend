@@ -113,6 +113,7 @@ urlpatterns = [
     path('stu-req-tutor/', stu_req_tutor_list, name="stu-requiring-tutor"),
     path('stu-req-donor/', stu_req_donor_list, name="stu-requiring-donor"),
     path('login/', views.login_view, name="login"),
+    path('sendemail/', views.sendemail, name="send email"),
     #path('logout/', views.logout_view, name="logout")
     ]
     #path('', include(router.urls)),

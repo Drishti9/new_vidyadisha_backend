@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 import accounts.models
+from twilio.rest import Client
 
 # Create your models here.
 class FriendList(models.Model):
@@ -139,4 +140,27 @@ class Post(models.Model):
     group=models.ForeignKey(Group, on_delete=models.CASCADE, related_name="group")
     message=models.CharField(max_length=250)
     timestamp=models.DateTimeField(auto_now_add=True)
+
+
+
+class Score(models.Model):
+    #tutor, student, timestamp, result, subject
+    result=models.PositiveIntegerField()
+
+    def _str_(self):
+        return str(self.result)
+
+    def save(self,args,*kwargs):
+        if self.result <75 :
+            
+            account_sid = 'ACbbc81ce39f850176d36eb33077b64e2c'
+            auth_token = '3ac9f36545703c5ee4c5fb8291a89858' 
+            client = Client(account_sid, auth_token) 
+            message = client.messages.create( 
+                            body = f"The current score is bad {self.result}",
+                            from_ = '+17755425836',
+                            to = '+919769004201' 
+                          ) 
+            print(message.sid) 
+        return super().save(args,*kwargs)
 

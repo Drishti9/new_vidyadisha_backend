@@ -9,6 +9,8 @@ from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_200_OK
 
+
+
 # Create your views here.
 class FriendListViewSet(generics.GenericAPIView):
     http_method_names = ["get"]
@@ -175,6 +177,3 @@ class PostInsertViewSet(generics.GenericAPIView):
         {"errors": "User not a member of group"},
         status=400,
     )
-
-
-    

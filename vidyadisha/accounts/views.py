@@ -20,7 +20,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 import json
 
+from twilio.rest import Client
+
 from rest_framework_simplejwt.tokens import RefreshToken
+
+from django.core.mail import send_mail
 
 def send_message(request):
     data = json.loads(request.body)
@@ -285,3 +289,38 @@ class RegisterTutor(generics.GenericAPIView):
             role = "DEFAULT"
         return Response({"role": role}, status=HTTP_200_OK)
         #return Response({"subnames": sub_names, "sub_type":sub_type}, status=HTTP_200_OK)
+
+@api_view(['POST',])
+def sendemail(request):
+    data = json.loads(request.body)
+    #message_subject= data.get('subject')
+    name=data.get('name')
+    message_body= data.get('body')
+    message_remail= data.get('receiver')
+    contact=data.get('contact')
+    student_name=data.get('student_name')
+        
+    print("request geenrated")
+    print(message_remail, type(message_remail))
+    #f"Welcome to VidyaDisha {name}, {student_name} wants your help.\nVidyaDisha is an online community aimed at connecting the less privileged students to adequately-educated classes of the society for guidance, tuition and sponsorship. We received a request to invite you to our website,www.vidyadisha.com and join our community in a role best suitable and convenient to you(Mentor/ Tutor/ Donor). Hope to see you soon as our valued member. In case of any queries, please mail us at vidyadisha.office@gmail.com.\n\n{message_body}",
+    
+    send_mail(
+        'Invitation to Vidyadisha',
+        message=f"Welcome to VidyaDisha {name}, {student_name} wants your help.\nVidyaDisha is an online community aimed at connecting the less privileged students to adequately-educated classes of the society for guidance, tuition and sponsorship. We received a request to invite you to our website,www.vidyadisha.com and join our community in a role best suitable and convenient to you(Mentor/ Tutor/ Donor). Hope to see you soon as our valued member. In case of any queries, please mail us at vidyadisha.office@gmail.com.\n\n{message_body}",
+        #'heellllo',
+        from_email='vidyadisha.office@gmail.com',
+        recipient_list=[message_remail],
+        fail_silently=False,
+    )
+
+    # account_sid = 'ACbbc81ce39f850176d36eb33077b64e2c'
+    # auth_token = '3ac9f36545703c5ee4c5fb8291a89858' 
+    # client = Client(account_sid, auth_token) 
+    # message = client.messages.create( 
+    #                 body = f"Welcome to VidyaDisha {name}, {student_name} wants your help.\nVidyaDisha is an online community aimed at connecting the less privileged students to adequately-educated classes of the society for guidance, tuition and sponsorship. We received a request to invite you to our website,www.vidyadisha.com and join our community in a role best suitable and convenient to you(Mentor/ Tutor/ Donor). Hope to see you soon as our valued member. In case of any queries, please mail us at vidyadisha.office@gmail.com.\n\n{message_body}",
+    #                 from_ = '+17755425836',
+    #                 to = f'+91{contact}' 
+    #                 )
+    # print(message.sid)
+
+    return Response(status=HTTP_200_OK)
