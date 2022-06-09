@@ -143,24 +143,24 @@ class Post(models.Model):
 
 
 
-class Score(models.Model):
-    #tutor, student, timestamp, result, subject
-    result=models.PositiveIntegerField()
+# class Score(models.Model):
+#     #tutor, student, timestamp, result, subject
+#     result=models.PositiveIntegerField()
 
-    def _str_(self):
-        return str(self.result)
+#     def _str_(self):
+#         return str(self.result)
 
-    def save(self,args,*kwargs):
-        if self.result <75 :
+#     def save(self,args,*kwargs):
+#         if self.result <75 :
             
-            account_sid = 'ACbbc81ce39f850176d36eb33077b64e2c'
-            auth_token = '3ac9f36545703c5ee4c5fb8291a89858' 
-            client = Client(account_sid, auth_token) 
-            message = client.messages.create( 
-                            body = f"The current score is bad {self.result}",
-                            from_ = '+17755425836',
-                            to = '+919769004201' 
-                          ) 
-            print(message.sid) 
-        return super().save(args,*kwargs)
+#             account_sid = 'ACbbc81ce39f850176d36eb33077b64e2c'
+#             auth_token = '3ac9f36545703c5ee4c5fb8291a89858' 
+#             client = Client(account_sid, auth_token) 
+#             message = client.messages.create( 
+#                             body = f"The current score is bad {self.result}",
+#                             from_ = '+17755425836',
+#                             to = '+919769004201' 
+#                           )
+#             print(message.sid) 
+#         return super().save(args,*kwargs)
 

@@ -94,8 +94,8 @@ stu_req_tutor_list=views.StuRequiringTutorViewSet.as_view({
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('user/',user_list, name="user-list"),
-    path('user/<int:pk>',user_detail, name="user-detail"),
+    path('user/', views.UserInformation.as_view(), name="user_info"),
+    path('user/<int:pk>', views.UserInformationWithId.as_view(), name="user_info_1"),
     path('student/',student_list, name="student-list"),
     path('student/<int:pk>',student_detail, name="student-detail"),
     path('mentor/',mentor_list, name="mentor-list"),
@@ -114,8 +114,10 @@ urlpatterns = [
     path('stu-req-donor/', stu_req_donor_list, name="stu-requiring-donor"),
     path('login/', views.login_view, name="login"),
     path('sendemail/', views.sendemail, name="send email"),
-    #path('logout/', views.logout_view, name="logout")
     ]
+    #path('logout/', views.logout_view, name="logout")
+    # path('user/',user_list, name="user-list"),
+    # path('user/<int:pk>',user_detail, name="user-detail"),
     #path('', include(router.urls)),
     #path('user-list/',views.UserList,name="User"),
     #path('student-list/',views.StudentList,name="Student"),

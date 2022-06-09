@@ -20,4 +20,5 @@ urlpatterns = [
     path('grouplist/<int:pk>', GroupListViewSet.as_view(), name="group"),#only get method: all groups of person with id=pk 
     path('post/<int:pk>', PostGetViewSet.as_view(), name="post"), #only get: posts of group with id=pk
     path('post/', PostInsertViewSet.as_view(), name="post")#only post: new posts
+    
 ]

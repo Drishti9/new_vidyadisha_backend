@@ -1,6 +1,7 @@
 import email
 from django.shortcuts import render
 from django.http import HttpResponse
+from sympy import sring
 from .serializers import * 
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -21,6 +22,7 @@ from django.http import JsonResponse
 import json
 
 from twilio.rest import Client
+from sms import send_sms
 
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -50,7 +52,8 @@ def get_tokens_for_user(user):
         'refresh': str(refresh),
         'access': str(refresh.access_token),
         'user': user.id,
-        'type':user_type
+        'type':user_type,
+        'first_name':user.first_name
     }
 
 @api_view(['POST',])
@@ -96,6 +99,53 @@ def logout_view(request):
     return Response(data=data, status=HTTP_200_OK)"""
 
 # Create your views here.
+
+
+class UserInformation(generics.GenericAPIView):
+    queryset=User.objects.all()
+    serializer_class=UserSerializer
+    
+    def get(self, request):
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
+        for each in serializer.data:
+            data=each
+            if serializer.data['is_student']:
+                type='student'
+            elif serializer.data['is_mentor']:
+                type='mentor'
+            elif serializer.data['is_tutor']:
+                type='tutor'
+            elif serializer.data['is_donor']:
+                type='donor'
+            #data['type']=type
+            print(data)
+        
+        print(serializer.data)
+        return Response(serializer.data)
+
+
+class UserInformationWithId(generics.GenericAPIView):
+    queryset=User.objects.all()
+    serializer_class=UserSerializer
+
+    def get(self, request, pk):
+        user = User.objects.get(id=pk)
+        serializer = UserSerializer(user)
+        #print(serializer.data['is_student'])
+        type=''
+        if serializer.data['is_student']:
+            type='student'
+        elif serializer.data['is_mentor']:
+            type='mentor'
+        elif serializer.data['is_tutor']:
+            type='tutor'
+        elif serializer.data['is_donor']:
+            type='donor'
+        data=serializer.data
+        data['type']=type
+        print(data)
+        return Response(data)
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset=User.objects.all()
@@ -312,6 +362,12 @@ def sendemail(request):
         recipient_list=[message_remail],
         fail_silently=False,
     )
+
+    """send_sms(
+    'Here is the message',
+    '+12065550100',
+    ['+919769004201', '+919324185450']
+    )"""
 
     # account_sid = 'ACbbc81ce39f850176d36eb33077b64e2c'
     # auth_token = '3ac9f36545703c5ee4c5fb8291a89858' 
